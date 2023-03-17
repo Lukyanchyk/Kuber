@@ -28,7 +28,6 @@ jobs:
         id: check
         run: |
           echo "(cat ${{env.pods}} | grep -v "Running" | wc -l)" >> ${{env.fc_pods}}
-          echo -e "(cat ${{env.pods}})" >> $GITHUB_OUTPUT    
 
       - name: Slack Notification good
         uses: rtCamp/action-slack-notify@v2
@@ -41,3 +40,8 @@ jobs:
             "${{env.repo}}"
           SLACK_TITLE: 'Checking Pods'
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Report test
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.fc_pods }}
