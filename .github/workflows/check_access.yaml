@@ -1,0 +1,26 @@
+name: Check access
+on:
+  workflow_dispatch
+jobs:
+  check_access:
+    name: access to Kuber VM
+    runs-on: ubuntu-latest
+    env:
+      test: test.log
+    permission:
+      packages: write
+      contents: read
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: connect to Kuber
+        run: |
+          mkdir ~/.ssh
+          eval `ssh-agent -s`
+          ssh-add - <<< "${{secrets.SSH_KEY}}"
+          ssh "${{secrets.SSH_KEY}}"@"${{secrets.SSH_KEY}}" ip a >> ${{env.test}}
+      - name: Report test
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.report }}
