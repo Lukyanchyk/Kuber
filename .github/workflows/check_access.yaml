@@ -28,9 +28,7 @@ jobs:
         id: check
         run: |
           echo "(cat ${{env.pods}} | grep -v "Running" | wc -l)" >> ${{env.fc_pods}}
-          echo "repo<<EOF" >> $GITHUB_OUTPUT
-          echo -e "(cat ${{env.pods}})" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo -e "(cat ${{env.pods}})" >> $GITHUB_OUTPUT    
 
       - name: Slack Notification good
         uses: rtCamp/action-slack-notify@v2
@@ -40,6 +38,6 @@ jobs:
           SLACK_USERNAME: Checking Pods
           SLACK_MESSAGE: |-
             "Everything is okay"
-            "${{steps.check.output.repo}}"
+            "${{env.repo}}"
           SLACK_TITLE: 'Checking Pods'
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
