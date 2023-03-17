@@ -19,7 +19,7 @@ jobs:
           echo "${{secrets.SSH_KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
           ssh "${{ secrets.KUBE_USER }}"@"${{ secrets.KUBE_HOST }}" \
           -o ProxyCommand="ssh -W %h:%p -q "${{secrets.JUMP_USER}}"@"${{secrets.JUMP_HOST}}"" \
-          kubecl get pods -A >> ${{env.test}}
+          kubectl get pods -A >> ${{env.test}}
       - name: Report test
         uses: actions/upload-artifact@v3
         with:
