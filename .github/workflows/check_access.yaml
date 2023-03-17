@@ -21,4 +21,4 @@ jobs:
       - name: Report test
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ env.report }}
+          path: ${{ env.test }}
