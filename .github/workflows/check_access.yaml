@@ -1,6 +1,9 @@
 name: Check access
 on:
   workflow_dispatch
+env:
+  report: report.log
+  crash_report: crash_report.log
 jobs:
   check_access:
     name: access to Kuber VM
@@ -18,22 +21,23 @@ jobs:
           echo "${{secrets.SSH_KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
           ssh "${{ secrets.KUBE_USER }}"@"${{ secrets.KUBE_HOST }}" \
           -o ProxyCommand="ssh -W %h:%p -q "${{secrets.JUMP_USER}}"@"${{secrets.JUMP_HOST}}"" \
-          echo "status=$(kubectl get pods -A)" >> $GITHUB_ENV 
+          echo "status=$(kubectl get pods -A)" >> report
       
       - name: Status Checker
         id: check
         run: |
-          echo "fc_pods=$(cat ${{env.status}} | grep -v "Running" | wc -l)" >> $GITHUB_ENV
+          echo "$(cat report| grep -v Running )" >> crash_report 2>&1
+          echo "pods_fail=$(cat report | grep -v Running | wc -l)" >> $GITHUB_OUTPUT
 
       - name: Slack Notification good
         uses: rtCamp/action-slack-notify@v2
-        if: ${{env.fc_pods}} > 0
+        if: steps.check_pods.outputs.pods_fail > 0
         env:
           SLACK_COLOR: ${{ job.status }}
           SLACK_USERNAME: Checking Pods
           SLACK_MESSAGE: |-
             "Everything is okay"
-            "${{env.status}}"
+            "$report"
           SLACK_TITLE: 'Checking Pods'
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
