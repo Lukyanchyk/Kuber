@@ -33,7 +33,7 @@ jobs:
 
       - name: Slack Notification good
         uses: rtCamp/action-slack-notify@v2
-        if: ${{steps.check.outputs.pods_fail}} == 0
+        if: ${{steps.check.outputs.pods_fail}} == 1
         env:
           SLACK_COLOR: ${{ job.status }}
           SLACK_USERNAME: Checking Pods
@@ -44,7 +44,7 @@ jobs:
 
       - name: Upload to slack step
         uses: adrey/slack-file-upload-action@master
-        if: ${{steps.check.outputs.pods_fail}} == 0
+        if: ${{steps.check.outputs.pods_fail}} == 1
         with:
           token: ${{ secrets.SLACK_BOT }}
           path: report
@@ -52,7 +52,7 @@ jobs:
 
       - name: Slack Notification problem
         uses: rtCamp/action-slack-notify@v2
-        if: ${{steps.check.outputs.pods_fail}} != 0
+        if: ${{steps.check.outputs.pods_fail}} != 1
         env:
           SLACK_COLOR: ${{ job.status }}
           SLACK_USERNAME: Checking Pods
@@ -63,8 +63,8 @@ jobs:
 
       - name: Upload to slack step
         uses: adrey/slack-file-upload-action@master
-        if: ${{steps.check.outputs.pods_fail}} != 0
+        if: ${{steps.check.outputs.pods_fail}} != 1
         with:
           token: ${{ secrets.SLACK_BOT }}
-          path: ${{steps.check.outputs.pods_fail}}
+          path: crash_report
           channel: monitoring
