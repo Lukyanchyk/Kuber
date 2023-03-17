@@ -23,7 +23,7 @@ jobs:
               User jump_sa
               IdentityFile ~/.ssh/id_rsa-jump_bastion
       - name: test
-        run: ping ${{JUMP_HOST}} >> ${{env.test}}
+        run: ping ${{secrets.JUMP_HOST}} >> ${{env.test}}
       - name: Report test
         uses: actions/upload-artifact@v3
         with:
