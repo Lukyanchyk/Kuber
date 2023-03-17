@@ -66,5 +66,5 @@ jobs:
         if: steps.check.outputs.pods_fail != 0
         with:
           token: ${{ secrets.SLACK_BOT }}
-          path: crash_report
+          path: ${{steps.check.outputs.pods_fail}}
           channel: monitoring
