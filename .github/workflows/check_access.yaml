@@ -37,6 +37,6 @@ jobs:
           SLACK_USERNAME: Checking Pods
           SLACK_MESSAGE: |-
             "Everything is okay"
-            "${{ step.check.outputs.pods_all }}"
+            "${{ steps.check.outputs.pods_all }}"
           SLACK_TITLE: 'Checking Pods'
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
