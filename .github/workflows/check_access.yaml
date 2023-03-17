@@ -16,6 +16,7 @@ jobs:
           mkdir ~/.ssh
           eval `ssh-agent -s`
           ssh-add - <<< "${{secrets.SSH_KEY}}"
+          ssh-keyscan -H ${{ secrets.JUMP_HOST }} >> ~/.ssh/known_hosts
           ssh "${{secrets.JUMP_USER}}"@"${{secrets.JUMP_HOST}}" ip a >> ${{env.test}}
       - name: Report test
         uses: actions/upload-artifact@v3
