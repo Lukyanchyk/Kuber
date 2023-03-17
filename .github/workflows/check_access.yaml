@@ -27,7 +27,7 @@ jobs:
       - name: Status Checker
         id: check
         run: |
-        cat ${{env.pods}} | grep -v "Running" | wc -l >> ${{env.fc_pods}}
+        echo (cat ${{env.pods}} | grep -v "Running" | wc -l) >> ${{env.fc_pods}}
         echo " repo=${{env.pods}}" >> $GITHUB_OUTPUT
 
       - name: Slack Notification good
