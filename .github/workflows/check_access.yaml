@@ -21,12 +21,12 @@ jobs:
           echo "${{secrets.SSH_KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
           ssh "${{ secrets.KUBE_USER }}"@"${{ secrets.KUBE_HOST }}" \
           -o ProxyCommand="ssh -W %h:%p -q "${{secrets.JUMP_USER}}"@"${{secrets.JUMP_HOST}}"" \
-          echo "status=$(kubectl get pods -A)" >> report
+          kubectl get pods -A" >> report
       
       - name: Status Checker
         id: check
         run: |
-          echo "$(cat report| grep -v Running )" >> crash_report 2>&1
+          echo "pods_all=$(cat report| grep -v Running )" >> $GITHUB_OUTPUT
           echo "pods_fail=$(cat report | grep -v Running | wc -l)" >> $GITHUB_OUTPUT
 
       - name: Slack Notification good
@@ -37,6 +37,6 @@ jobs:
           SLACK_USERNAME: Checking Pods
           SLACK_MESSAGE: |-
             "Everything is okay"
-            "$report"
+            "{{ step.check.outputs.pods_all }}"
           SLACK_TITLE: 'Checking Pods'
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
