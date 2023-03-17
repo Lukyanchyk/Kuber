@@ -26,7 +26,7 @@ jobs:
       - name: Status Checker
         id: check
         run: |
-          echo "pods_all=$(cat report| grep -v Running )" >> $GITHUB_OUTPUT
+          echo "pods_all=$(cat report)" >> $GITHUB_OUTPUT
           echo "pods_fail=$(cat report | grep -v Running | wc -l)" >> $GITHUB_OUTPUT
 
       - name: Slack Notification good
@@ -37,6 +37,6 @@ jobs:
           SLACK_USERNAME: Checking Pods
           SLACK_MESSAGE: |-
             "Everything is okay"
-            "{{ step.check.outputs.pods_all }}"
+            "${{ step.check.outputs.pods_all }}"
           SLACK_TITLE: 'Checking Pods'
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
