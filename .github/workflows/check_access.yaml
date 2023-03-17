@@ -27,7 +27,7 @@ jobs:
       - name: Status Checker
         id: check
         run: |
-          echo "$(cat report | grep -v Running )" >> crash_report
+          echo "(cat report | grep -v Running )" >> crash_report
           echo "pods_fail=$(cat report | grep -v Running | wc -l)" >> $GITHUB_OUTPUT
 
       - name: Slack Notification good
