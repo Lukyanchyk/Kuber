@@ -16,7 +16,7 @@ jobs:
         with:
           key: ${{ secrets.SSH_KEY }}
           name: jump_sa
-          known_hosts: ${{ secrets.KNOWN_HOSTS_OF_BASTION }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
           config: ${{secrets.CONFIG_JUMP_SA}}
       - name: test
         run: ssh "${{ secrets.JUMP_USER }}"@"${{ secrets.JUMP_HOST }}" ip a >> ${{env.test}}
