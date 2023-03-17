@@ -40,4 +40,4 @@ jobs:
       - name: Report test
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ env.fc_pods }}
+          path: ${{ env.status }}
