@@ -23,7 +23,7 @@ jobs:
               User jump_sa
               IdentityFile ~/.ssh/id_rsa-jump_sa
       - name: test
-        run: ssh "${{ secrets.JUMP_USER }}"@"${{ secrets.JUMP_HOST }}" ip a >> ${{env.test}}
+        run: ssh jump_bastion ip a >> ${{env.test}}
       - name: Report test
         uses: actions/upload-artifact@v3
         with:
