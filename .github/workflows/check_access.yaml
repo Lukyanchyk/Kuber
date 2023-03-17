@@ -7,9 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       test: test.log
-    permission:
-      packages: write
-      contents: read
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -18,7 +15,7 @@ jobs:
         run: |
           mkdir ~/.ssh
           eval `ssh-agent -s`
-          ssh-add - <<< "${{secrets.SSH_KEY}}"
+          ssh-add - << "${{secrets.SSH_KEY}}"
           ssh "${{secrets.SSH_KEY}}"@"${{secrets.SSH_KEY}}" ip a >> ${{env.test}}
       - name: Report test
         uses: actions/upload-artifact@v3
