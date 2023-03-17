@@ -26,6 +26,7 @@ jobs:
       - name: Status Checker
         id: check
         run: |
+          echo "pods_all=$(cat report)" >> $GITHUB_OUTPUT
           echo "pods_fail=$(cat report | grep -v Running | wc -l)" >> $GITHUB_OUTPUT
 
       - name: Slack Notification good
@@ -36,6 +37,11 @@ jobs:
           SLACK_USERNAME: Checking Pods
           SLACK_MESSAGE: |-
             "Everything is okay"
-            "${{env.report}}"
           SLACK_TITLE: 'Checking Pods'
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+       - name: Upload to slack step
+         uses: adrey/slack-file-upload-action@master
+         with:
+           token: ${{ secrets.SLACK_BOT }}
+           path: ${{env.report}}
+           channel: monitoring
