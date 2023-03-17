@@ -30,6 +30,7 @@ jobs:
           echo "(cat ${{env.pods}} | grep -v "Running" | wc -l)" >> ${{env.fc_pods}}
           echo "repo<<EOF" >> $GITHUB_OUTPUT
           echo -e "(cat ${{env.pods}})" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Slack Notification good
         uses: rtCamp/action-slack-notify@v2
