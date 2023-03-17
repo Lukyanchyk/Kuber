@@ -39,9 +39,10 @@ jobs:
             "Everything is okay"
           SLACK_TITLE: 'Checking Pods'
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-       - name: Upload to slack step
-         uses: adrey/slack-file-upload-action@master
-         with:
-           token: ${{ secrets.SLACK_BOT }}
-           path: ${{env.report}}
-           channel: monitoring
+
+      - name: Upload to slack step
+        uses: adrey/slack-file-upload-action@master
+        with:
+          token: ${{ secrets.SLACK_BOT }}
+          path: ${{env.report}}
+          channel: monitoring
