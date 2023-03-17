@@ -35,7 +35,7 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         if: steps.check.outputs.pods_fail == 1
         env:
-          SLACK_COLOR: ${{ job.status }}
+          SLACK_COLOR: "00ff00"
           SLACK_USERNAME: Checking Pods
           SLACK_MESSAGE: |-
             "Everything is okay"
@@ -54,7 +54,7 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         if: steps.check.outputs.pods_fail != 1
         env:
-          SLACK_COLOR: ${{ job.status }}
+          SLACK_COLOR: "ff0000"
           SLACK_USERNAME: Checking Pods
           SLACK_MESSAGE: |-
             "Houston we have a problem"
