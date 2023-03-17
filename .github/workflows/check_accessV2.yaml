@@ -1,0 +1,26 @@
+name: Check access V2
+on:
+  workflow_dispatch
+jobs:
+  check_access:
+    name: access to Kuber VM
+    runs-on: ubuntu-latest
+    env:
+      test: test.log
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Install SSH key of bastion
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          name: jump_sa
+          known_hosts: ${{ secrets.KNOWN_HOSTS_OF_BASTION }}
+          config: ${{secrets.CONFIG_JUMP_SA}}
+      - name: test
+        run: ssh "${{ secrets.JUMP_USER }}"@"${{ secrets.JUMP_HOST }}" ip a >> ${{env.test}}
+      - name: Report test
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.test }}
