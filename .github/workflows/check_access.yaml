@@ -11,14 +11,15 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
-      - name: connect to Kuber
+      - name: connect to Kuber and obtaining information about pods
         run: |
           mkdir ~/.ssh
           eval `ssh-agent -s`
           ssh-add - <<< "${{secrets.SSH_KEY}}"
           echo "${{secrets.SSH_KNOWN_HOSTS}}" >> ~/.ssh/known_hosts  
-          ssh "${{ secrets.KUBE_USER }}"@"${{ secrets.KUBE_HOST }}" -o ProxyCommand="ssh -W %h:%p -q "${{secrets.JUMP_USER}}"@"${{secrets.JUMP_HOST}}"" \
-          && ip a >> ${{env.test}}
+          ssh "${{ secrets.KUBE_USER }}"@"${{ secrets.KUBE_HOST }}" \
+          -o ProxyCommand="ssh -W %h:%p -q "${{secrets.JUMP_USER}}"@"${{secrets.JUMP_HOST}}"" \
+           kubecl get pods -A >> ${{env.test}}
       - name: Report test
         uses: actions/upload-artifact@v3
         with:
