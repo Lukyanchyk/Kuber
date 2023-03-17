@@ -43,5 +43,5 @@ jobs:
         uses: adrey/slack-file-upload-action@master
         with:
           token: ${{ secrets.SLACK_BOT }}
-          path: ${{env.report}}
+          path: report
           channel: monitoring
