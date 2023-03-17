@@ -3,13 +3,9 @@ on:
   workflow_dispatch
 jobs:
   check_access:
-    outputs:
-      output1: ${{ steps.check.outputs.repo }}
     name: access to Kuber VM
     runs-on: ubuntu-latest
-    env:
-      pods: pods.txt
-      fc_pods: fc_pods.txt
+
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -22,12 +18,12 @@ jobs:
           echo "${{secrets.SSH_KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
           ssh "${{ secrets.KUBE_USER }}"@"${{ secrets.KUBE_HOST }}" \
           -o ProxyCommand="ssh -W %h:%p -q "${{secrets.JUMP_USER}}"@"${{secrets.JUMP_HOST}}"" \
-          kubectl get pods -A >> ${{env.pods}}
+          echo "status=$(kubectl get pods -A) >> $GITHUB_ENV 
       
       - name: Status Checker
         id: check
         run: |
-          echo "(cat ${{env.pods}} | grep -v "Running" | wc -l)" >> ${{env.fc_pods}}
+          echo "fc_pods=$(cat ${{env.status}} | grep -v "Running" | wc -l)" >> $GITHUB_ENV
 
       - name: Slack Notification good
         uses: rtCamp/action-slack-notify@v2
@@ -37,7 +33,7 @@ jobs:
           SLACK_USERNAME: Checking Pods
           SLACK_MESSAGE: |-
             "Everything is okay"
-            "${{env.repo}}"
+            "${{env.status}}"
           SLACK_TITLE: 'Checking Pods'
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
