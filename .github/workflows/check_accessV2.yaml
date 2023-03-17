@@ -17,7 +17,11 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           name: jump_sa
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
-          config: ${{secrets.CONFIG_JUMP_SA}}
+          config: |
+            Host jump_bastion
+              HostName 178.124.206.53
+              User jump_sa
+              IdentityFile ~/.ssh/id_rsa-jump_sa
       - name: test
         run: ssh "${{ secrets.JUMP_USER }}"@"${{ secrets.JUMP_HOST }}" ip a >> ${{env.test}}
       - name: Report test
