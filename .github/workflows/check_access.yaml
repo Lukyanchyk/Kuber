@@ -1,12 +1,13 @@
 name: checking pods in k3s
 on:
   workflow_dispatch
+
 env:
   report: report.log
   crash_report: crash_report.log
+
 jobs:
   job1:
-
     name: checking pods in k3s
     runs-on: ubuntu-latest
 
@@ -27,6 +28,7 @@ jobs:
       - name: Status Checker
         id: check
         run: |
+          echo "$(cat  report | grep -v Running)" >> crash_report 2>&1
           echo "pods_fail=$(cat report | grep -v Running | wc -l)" >> $GITHUB_OUTPUT
 
       - name: Slack Notification good
