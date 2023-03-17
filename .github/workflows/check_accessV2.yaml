@@ -21,7 +21,7 @@ jobs:
             Host jump_bastion
               HostName 178.124.206.53
               User jump_sa
-              IdentityFile ~/.ssh/id_rsa-jump_sa
+              IdentityFile ~/.ssh/id_rsa-jump_bastion
       - name: test
         run: ssh jump_bastion ip a >> ${{env.test}}
       - name: Report test
