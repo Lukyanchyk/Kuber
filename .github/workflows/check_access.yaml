@@ -18,7 +18,7 @@ jobs:
           echo "${{secrets.SSH_KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
           ssh "${{ secrets.KUBE_USER }}"@"${{ secrets.KUBE_HOST }}" \
           -o ProxyCommand="ssh -W %h:%p -q "${{secrets.JUMP_USER}}"@"${{secrets.JUMP_HOST}}"" \
-          echo "status=$(kubectl get pods -A) >> $GITHUB_ENV 
+          echo "status=$(kubectl get pods -A)" >> $GITHUB_ENV 
       
       - name: Status Checker
         id: check
